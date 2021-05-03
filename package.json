@@ -1,0 +1,32 @@
+{
+  "name": "withdrawal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=testing mocha --exit",
+    "dev": "NODE_ENV=development nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devitasari/withdrawal.git"
+  },
+  "keywords": [],
+  "author": "devita",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devitasari/withdrawal/issues"
+  },
+  "homepage": "https://github.com/devitasari/withdrawal#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "dotenv": "^8.2.0"
+  }
+}
