@@ -1,7 +1,6 @@
 const Withdrawal = require("../models/withdrawal")
 const BankAccount = require("../models/bankAccount")
 const User = require("../models/user")
-const { use } = require("../routes")
 
 class WithdrawalController {
     static create(req, res, next) {
@@ -64,7 +63,35 @@ class WithdrawalController {
     }
 
     static history(req, res, next) {
-        BankAccount.find()
+        let result = []
+        let withdrawData
+        Withdrawal.find({
+            userId: req.params.userId
+        })
+        .then(withdrawals => {
+            withdrawData = withdrawals
+            return BankAccount.find({
+                userId: req.params.userId
+            })
+        })
+        .then(bank => {
+            for (let i=0; i<withdrawData.length; i++) {
+                for (let j=0; j<bank.length; j++) {
+                    if (withdrawData[i].bankId == bank[j]._id) {
+                        let el = {
+                            _id: withdrawData[i]._id,
+                            amount: withdrawData[i].amount,
+                            timestamps: withdrawData[i].timestamps,
+                            bankDetail: bank[j]
+                        }
+                        result.push(el)
+                        break
+                    }
+                }
+            }
+            res.status(200).json(result)
+        })
+        .catch(next)
     }
 }
 
