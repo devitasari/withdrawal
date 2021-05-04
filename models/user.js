@@ -12,8 +12,8 @@ const userSchema = new Schema({
     lastWithdrawal: {
         type: Date
     },
-    balances: {
-        type: Array
+    balance: {
+        type: Object
     }
 })
 

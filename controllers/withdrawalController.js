@@ -1,6 +1,7 @@
 const Withdrawal = require("../models/withdrawal")
 const BankAccount = require("../models/bankAccount")
 const User = require("../models/user")
+const { use } = require("../routes")
 
 class WithdrawalController {
     static create(req, res, next) {
@@ -8,7 +9,6 @@ class WithdrawalController {
         // is bank belong to user?
         BankAccount.findById(req.body.bankAccountId)
             .then(foundedBank => {
-                console.log(`foundedBank: `, foundedBank)
                 if (foundedBank && foundedBank.userId == req.body.userId) {
                     bank = foundedBank
                     // is balance enough
@@ -20,26 +20,22 @@ class WithdrawalController {
                 }
             })
             .then(user => {
-                console.log(`user:`, user)
                 if (user) {
-                    for (let i = 0; i < user.balances.length; i++) {
-                        if (user.balances[i].currency === bank.currency && user.balances[i].amount >= req.body.amount) {
+                        if (user.balance && user.balance[bank.currency] >= req.body.amount) {
                             // is time valid
                             if (user.lastWithdrawal.toISOString().split('T')[0] !== new Date().toISOString().split('T')[0]) {
-                                user.lastWithdrawal = new Date()
-                                user.save()
+                                let newBalance = user.balance 
+                                newBalance[bank.currency] -= +req.body.amount
+
                                 return User.updateOne(
-                                    { _id: user._id, balances: user.balances[i] },
+                                    { _id: user._id },
                                     {
                                         $set: {
-                                            "balances.$": {
-                                                currency: user.balances[i].currency,
-                                                amount: user.balances[i].amount - Number(req.body.amount)
-                                            }
+                                            balance : newBalance,
+                                            lastWithdrawal: new Date()
                                         }
                                     }
                                 )
-
                             } else {
                                 throw {
                                     message: `only once a day withdrawal allowed`
@@ -50,7 +46,6 @@ class WithdrawalController {
                                 message: `balance is less than amount`
                             }
                         }
-                    }
                 }
             })
             .then(() => {
