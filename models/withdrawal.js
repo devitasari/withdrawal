@@ -5,15 +5,19 @@ const withdrawalSchema = new Schema({
         type: String,
         required: [true, `user id can't be empty`]
     },
-    bankId: {
-        type: String,
+    bankDetail: {
+        type: Object,
         required: [true, `bank id can't be empty`]
     },
     amount: {
         type: Number,
         required: [true, `amount can't be empty`]
     },
-    timestamps: {
+    status: {
+        type: String,
+        required: [true, `status can't be empty`]
+    },
+    createdAt: {
         type: Date,
         required: [true, `timestamps can't be empty`]
     }
