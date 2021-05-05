@@ -1,20 +1,18 @@
 const errorHandler = (err, req, res, next) => {
-    console.log(err)
-    let status, message, error = []
-  
-    if (err.name === 'ValidationError') {
+    let status, error = []
+    if (err.status && err.message) {
+      status = err.status
+      error.push(err.message)
+    } else if (err.name === 'ValidationError') {
       status = 422
       for (let key in err.errors) {
         error.push(err.errors[key].message)
       }
-      
     } else if (err.name === 'CastError') {
-      status = 404
-      error.push('Data tidak ditemukan.')
-  
+      status = err.status || 404
+      error.push('data not found')
     } else {
-      if (err.status) status = err.status
-      else status = 400
+      status = err.status || 400
       error.push(err.message)
     }
   

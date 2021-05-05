@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=testing mocha --exit",
-    "dev": "NODE_ENV=development nodemon app.js"
+    "test": "NODE_ENV=testing mocha --timeout 15000 --exit",
+    "dev": "NODE_ENV=development nodemon app.js",
+    "coverage": "nyc yarn test"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "nyc": "^15.1.0"
   }
 }

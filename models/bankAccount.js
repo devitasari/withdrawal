@@ -32,7 +32,7 @@ const bankAccountSchema = new Schema({
     accountHolderName: {
         type: String,
         required: [true, `account holder name can't be empty`],
-        minLength: [3, `account number minimal 10 chars`]
+        minLength: [3, `account holder name minimal 3 chars`]
     }
 })
 

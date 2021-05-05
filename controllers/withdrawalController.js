@@ -14,28 +14,31 @@ class WithdrawalController {
                     // is balance enough
                     return User.findById(req.body.userId)
                 } else {
-                    throw {
+                    next({
+                        status: 401,
                         message: `unauthorized`
-                    }
+                    })
                 }
             })
             .then(user => {
                 if (user) {
                     if (user.balance && user.balance[bank.currency] >= req.body.amount) {
                         // is time valid
-                        if (user.lastWithdrawal.toISOString().split('T')[0] !== new Date().toISOString().split('T')[0]) {
+                        if (!user.lastWithdrawal || user.lastWithdrawal.toISOString().split('T')[0] !== new Date().toISOString().split('T')[0]) {
                             // transaction begin
                             start(req, res, user, bank)
 
                         } else {
-                            throw {
+                            next({
+                                status: 400,
                                 message: `only once a day withdrawal allowed`
-                            }
+                            })
                         }
                     } else {
-                        throw {
+                        next({
+                            status: 400,
                             message: `balance is less than amount`
-                        }
+                        })
                     }
                 }
             })

@@ -22,7 +22,10 @@ class BankAccountController {
             { new: true }
         )
         .then(bankAccount => {
-            res.status(200).json(bankAccount)
+            if (bankAccount) res.status(200).json(bankAccount)
+            else {
+                next({ status: 404 , message: `data not found`})
+            }
         })
         .catch(next)
     }

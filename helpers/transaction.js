@@ -26,7 +26,7 @@ async function start(req, res, user, bank) {
 
         Withdrawal.findById(idNewWithdrawal)
         .then(data => {
-            res.status(200).json(data)
+            res.status(201).json(data)
         })
 
     } catch (err) {

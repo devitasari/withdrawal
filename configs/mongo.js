@@ -1,5 +1,11 @@
 const mongoose = require("mongoose")
-const mongoUri = process.env.mongoUri
+let mongoUri 
+
+if (process.env.NODE_ENV == `testing`) {
+    mongoUri = process.env.mongoUriTest
+} else {
+    mongoUri = process.env.mongoUri
+}
 
 const mongoConfig = {
     useCreateIndex: true,
