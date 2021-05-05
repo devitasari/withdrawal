@@ -10,7 +10,7 @@ const invalidBankId = "1234567890"
 chai.use(chaiHttp)
 const expect = chai.expect
 
-before(function (done) {
+before((done) => {
     User.create({
         bussinesName: `test`,
         email: `test@mail.com`,
@@ -26,7 +26,7 @@ before(function (done) {
     .catch(console.log)
 })
 
-after(function (done) {
+after((done) => {
     BankAccount.deleteMany()
         .then(() => {
             console.log(`testing: delete all bank accounts succes!`)
